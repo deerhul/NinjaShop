@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PirateShop.Models.Ninja
+namespace PirateShop.Models.Items
 {
     public class Equipment
     {

@@ -1,12 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PirateShop.Models.Ninja
+namespace PirateShop.Models.Items
 {
-    public enum Gender
-    {
-        Male = 0,
-        Female = 1
-    }
     public class Ninja
     {
         [Required]
@@ -23,5 +18,11 @@ namespace PirateShop.Models.Ninja
 
         [Required]
         public int Age { get; set; }
+    }
+
+    public enum Gender
+    {
+        Male = 0,
+        Female = 1
     }
 }
