@@ -1,9 +1,17 @@
-﻿namespace PirateShop.Models.Ninja
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PirateShop.Models.Ninja
 {
     public class Clan
     {
+        [Required]
         public int ClanID { get; set; }
+
+        [Required]
+        [StringLength(100)]
         public string ClanName { get; set; }
+
+        [Required]
         public int Members { get; set; }
         /*
          * not for later:
