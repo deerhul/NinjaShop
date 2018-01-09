@@ -18,11 +18,11 @@ namespace PirateShop.Models.Items
 
         [Required]
         public int Age { get; set; }
+
+        //to be implemented later
+        //[Required]
+        //public DateTime DOB { get; set; }
     }
 
-    public enum Gender
-    {
-        Male = 0,
-        Female = 1
-    }
+    
 }

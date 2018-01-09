@@ -10,6 +10,7 @@ namespace PirateShop.Models
         public DbSet<Clan> Clans { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<NinjaInventory> NinjaInventories { get; set; }
+        public DbSet<Gender> Genders { get; set; }
 
         //public ApplicationDbContext()
         //    : base("DefaultConnection", throwIfV1Schema: false)
