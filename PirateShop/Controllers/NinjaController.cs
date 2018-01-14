@@ -5,11 +5,11 @@ using System.Web.Mvc;
 
 namespace PirateShop.Controllers
 {
-    public class PirateController : Controller
+    public class NinjaController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PirateController()
+        public NinjaController()
         {
             //Research application injection
             _context = new ApplicationDbContext();
@@ -20,6 +20,7 @@ namespace PirateShop.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             var vm = new NinjaViewModel

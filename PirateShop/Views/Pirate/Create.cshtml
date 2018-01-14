@@ -1,11 +1,14 @@
 ﻿@model PirateShop.Models.ViewModels.NinjaViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create A Ninja";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Create</h2>
-
+@using (Html.BeginForm("Create", "Pirate"))
+{
+    
+}
 <form>
     <div class ="form-group">
         @Html.LabelFor(m => m.Name)
