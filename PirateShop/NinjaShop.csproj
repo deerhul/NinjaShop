@@ -216,6 +216,14 @@
     <Compile Include="Migrations\201801091309339_populateGenderTable.Designer.cs">
       <DependentUpon>201801091309339_populateGenderTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801141758482_CreatorTableforninja.cs" />
+    <Compile Include="Migrations\201801141758482_CreatorTableforninja.Designer.cs">
+      <DependentUpon>201801141758482_CreatorTableforninja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801141800181_CreatorTableforninja2.cs" />
+    <Compile Include="Migrations\201801141800181_CreatorTableforninja2.Designer.cs">
+      <DependentUpon>201801141800181_CreatorTableforninja2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -288,7 +296,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Pirate\Create.cshtml" />
+    <Content Include="Views\Ninja\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -321,6 +329,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801091309339_populateGenderTable.resx">
       <DependentUpon>201801091309339_populateGenderTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801141758482_CreatorTableforninja.resx">
+      <DependentUpon>201801141758482_CreatorTableforninja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801141800181_CreatorTableforninja2.resx">
+      <DependentUpon>201801141800181_CreatorTableforninja2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

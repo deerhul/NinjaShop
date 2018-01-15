@@ -19,6 +19,8 @@ namespace PirateShop.Models.Items
         [Required]
         public int Age { get; set; }
 
+        public ApplicationUser Creator { get; set; }
+
         //to be implemented later
         //[Required]
         //public DateTime DOB { get; set; }
