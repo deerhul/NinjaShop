@@ -1,5 +1,6 @@
 ﻿using PirateShop.Models.Items;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace PirateShop.Models.ViewModels
 {
@@ -14,6 +15,10 @@ namespace PirateShop.Models.ViewModels
         public IEnumerable<Clan> Clans { get; set; }
         public Gender Gender { get; set; }
         public IEnumerable<Gender> Genders { get; set; }
+
+        public SelectList nameList { get; set; }
+
+        public SelectList genderList { get; set; }
         //SECTION : "Building a Form with Bootstrap ep 4"
 
     }
