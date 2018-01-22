@@ -1,6 +1,7 @@
 ﻿using PirateShop.Models;
 using PirateShop.Models.Items;
 using PirateShop.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -26,71 +27,79 @@ namespace PirateShop.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            var vm = new NinjaViewModel
-            {
-                //Clan = new Clan(),
-                //Gender = new Gender(),
-                Clans = _context.Clans.ToList(),
-                Genders = _context.Genders.ToList()
-            };
-
-            return View(vm);
+            AlertMsg("Created Ninja", "test");
+            return View(makeModel());
         }
 
         [Authorize]
         [HttpPost]
         public ActionResult Create(NinjaViewModel viewModel)
         {
-            // the id of logged-in member
-            //var creatorId = User.Identity.GetUserId();
-            //var clanSelected = viewModel.clan;
-            //var genderSelected = viewModel.gender;
+            try
+            {
+                // the id of logged-in member
+                //var creatorId = User.Identity.GetUserId();
+                //var clanSelected = viewModel.Clan.ClanID;
+                //int genderSelected = viewModel.Gender.ID;
 
-            //var creator = _context.Users.Single(u => u.Id == creatorId);
-            //var clan = _context.Clans.Find(clanSelected.ClanName);
-            //var gender = _context.Genders.Single(g => g == genderSelected);
+                //var creator = _context.Users.Single(u => u.Id == creatorId);
+                //Clan clan = _context.Clans.Single(c => c.ClanID == clanSelected);
+                //Gender gender = _context.Genders.Single(g => g.ID == genderSelected);
 
-            //var ninja = new Ninja
-            //{
-            //    Name = viewModel.Name,
-            //    clan = clan,
-            //    gender = gender,
-            //    Age = viewModel.Age,
-            //    Creator = creator
-            //};
+                //var ninja = new Ninja
+                //{
+                //    Name = viewModel.Name,
+                //    clan = clan,
+                //    gender = gender,
+                //    Age = viewModel.Age,
+                //    Creator = creator
+                //};
 
-            //_context.Ninjas.Add(ninja);
-            //_context.SaveChanges();
+                //_context.Ninjas.Add(ninja);
+                //_context.SaveChanges();
 
-            //current not getting the values for Clan and Gender selected.
-            //implement an alert box to check if the selected items actually has value
+                //current not getting the values for Clan and Gender selected.
+                //implement an alert box to check if the selected items actually has value
 
-            AlertMsg("Name", viewModel.Name);
-            AlertMsg("check", viewModel.Gender.ID.ToString());
-            //return RedirectToAction("Index", "Home");
+                //AlertMsg("Created Ninja",
+                //    string.Format("{0}\n{1}\n{2}\n",
+                //    viewModel.Name,
+                //    viewModel.Age,
+                //    viewModel.Gender.ID
+                //    ));
+                AlertMsg("Create ninja", "Success");
+            }
+            catch (Exception e)
+            {
+                AlertMsg("Create ninja", "Failed");
+            }
+            
+            return RedirectToAction("Index", "Home");
 
-            viewModel = makeModel();
+            //viewModel = makeModel();
 
-            return View(viewModel);
+            //return View(viewModel);
         }
 
+        //pop up message for testing or whatever
         public void AlertMsg(string text, string text2)
         {
 
-            string msg = string.Format("Content of {0}, is {1}.", text, text2);
-            ViewData["AlertMsg"] = msg;
+            string msg = string.Format("{0}:\n---------\n {1}.", text, text2);
+            ViewBag.alertMessage = msg;
         }
 
         public NinjaViewModel makeModel()
         {
-            List<SelectListItem> tempList
-                = new List<SelectListItem>();
+            /*just for testing dropdownlist*/
+            //List<SelectListItem> tempList
+            //    = new List<SelectListItem>();
 
-            tempList.Add(new SelectListItem() {Text = "Daryl", Value = "Beast"});
-            tempList.Add(new SelectListItem() {Text = "Alchellle", Value = "Bitch"});
-            tempList.Add(new SelectListItem() {Text = "Krystal", Value = "Teddybear Cate"});
-            tempList.Add(new SelectListItem() {Text = "LuLu", Value = "Pisoshate"});
-            tempList.Add(new SelectListItem() {Text = "Belle", Value = "Buldoggoloinks"});
+            //tempList.Add(new SelectListItem() {Text = "Daryl", Value = "Beast"});
+            //tempList.Add(new SelectListItem() {Text = "Alchellle", Value = "Bitch"});
+            //tempList.Add(new SelectListItem() {Text = "Krystal", Value = "Teddybear Cate"});
+            //tempList.Add(new SelectListItem() {Text = "LuLu", Value = "Pisoshate"});
+            //tempList.Add(new SelectListItem() {Text = "Belle", Value = "Buldoggoloinks"});
 
             NinjaViewModel mm =
                 new NinjaViewModel()
@@ -101,10 +110,10 @@ namespace PirateShop.Controllers
                     Clans = _context.Clans.ToList(),
                     Gender = new Gender(),
                     Genders = _context.Genders.ToList(),
-                    //clanList = clanListPopulator(),
+                    clanList = clanListPopulator(),
                     genderList = genderListPopulator(),
 
-                    nameList = new SelectList(tempList, "Value", "Text")
+                    //nameList = new SelectList(tempList, "Value", "Text")
                 };
 
 
@@ -124,6 +133,27 @@ namespace PirateShop.Controllers
                     {
                         Text = item.gender,
                         Value = item.ID.ToString()
+                    }
+                );
+            }
+
+            output = new SelectList(itemList, "Value", "Text");
+
+            return output;
+        }
+
+        public SelectList clanListPopulator()
+        {
+            SelectList output;
+            var dblist = _context.Clans.ToList();
+            List<SelectListItem> itemList = new List<SelectListItem>();
+
+            foreach (var item in dblist)
+            {
+                itemList.Add(new SelectListItem()
+                    {
+                        Text = item.ClanName,
+                        Value = item.ClanID.ToString()
                     }
                 );
             }

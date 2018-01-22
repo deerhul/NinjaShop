@@ -19,6 +19,8 @@ namespace PirateShop.Models.ViewModels
         public SelectList nameList { get; set; }
 
         public SelectList genderList { get; set; }
+
+        public SelectList clanList { get; set; }
         //SECTION : "Building a Form with Bootstrap ep 4"
 
     }
