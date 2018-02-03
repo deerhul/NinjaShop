@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201801141800181_CreatorTableforninja2.Designer.cs">
       <DependentUpon>201801141800181_CreatorTableforninja2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802031705197_genderModelDataAnnotations.cs" />
+    <Compile Include="Migrations\201802031705197_genderModelDataAnnotations.Designer.cs">
+      <DependentUpon>201802031705197_genderModelDataAnnotations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -335,6 +339,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801141800181_CreatorTableforninja2.resx">
       <DependentUpon>201801141800181_CreatorTableforninja2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802031705197_genderModelDataAnnotations.resx">
+      <DependentUpon>201802031705197_genderModelDataAnnotations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

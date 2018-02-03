@@ -1,4 +1,5 @@
-﻿using PirateShop.Models;
+﻿using Microsoft.AspNet.Identity;
+using PirateShop.Models;
 using PirateShop.Models.Items;
 using PirateShop.Models.ViewModels;
 using System;
@@ -27,8 +28,8 @@ namespace PirateShop.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            AlertMsg("Created Ninja", "test");
-            return View(makeModel());
+            //AlertMsg("Created Ninja", "test");
+            return View(makeModel(null));
         }
 
         [Authorize]
@@ -38,68 +39,58 @@ namespace PirateShop.Controllers
             try
             {
                 // the id of logged-in member
-                //var creatorId = User.Identity.GetUserId();
-                //var clanSelected = viewModel.Clan.ClanID;
-                //int genderSelected = viewModel.Gender.ID;
+                var creatorId = User.Identity.GetUserId();
+                var clanSelected = viewModel.Clan.ClanID;
+                int genderSelected = viewModel.Gender.ID;
 
-                //var creator = _context.Users.Single(u => u.Id == creatorId);
-                //Clan clan = _context.Clans.Single(c => c.ClanID == clanSelected);
-                //Gender gender = _context.Genders.Single(g => g.ID == genderSelected);
+                var creator = _context.Users.Single(u => u.Id == creatorId);
+                Clan clan = _context.Clans.Single(c => c.ClanID == clanSelected);
+                Gender gender = _context.Genders.Single(g => g.ID == genderSelected);
 
-                //var ninja = new Ninja
-                //{
-                //    Name = viewModel.Name,
-                //    clan = clan,
-                //    gender = gender,
-                //    Age = viewModel.Age,
-                //    Creator = creator
-                //};
+                var ninja = new Ninja
+                {
+                    Name = viewModel.Name,
+                    clan = clan,
+                    gender = gender,
+                    Age = viewModel.Age,
+                    Creator = creator
+                };
 
-                //_context.Ninjas.Add(ninja);
-                //_context.SaveChanges();
+                _context.Ninjas.Add(ninja);
+                _context.SaveChanges();
 
-                //current not getting the values for Clan and Gender selected.
-                //implement an alert box to check if the selected items actually has value
+                string msg = string.Format("{0}, {1}, {2}, from the {3}",
+                    viewModel.Name,
+                    viewModel.Age,
+                    gender.gender,
+                    clan.ClanName);
+                viewModel = AlertMsg("Created Ninja...", msg);
 
-                //AlertMsg("Created Ninja",
-                //    string.Format("{0}\n{1}\n{2}\n",
-                //    viewModel.Name,
-                //    viewModel.Age,
-                //    viewModel.Gender.ID
-                //    ));
-                AlertMsg("Create ninja", "Success");
             }
             catch (Exception e)
             {
-                AlertMsg("Create ninja", "Failed");
+                viewModel = AlertMsg("Create ninja", "Failed");
             }
-            
-            return RedirectToAction("Index", "Home");
 
-            //viewModel = makeModel();
+            //return RedirectToAction("Index", "Home");
 
-            //return View(viewModel);
+            return View(viewModel);
         }
 
-        //pop up message for testing or whatever
-        public void AlertMsg(string text, string text2)
+        /* assigns a message to the NinjaViewModel attribute 
+         * message displayed in view
+        */
+        public NinjaViewModel AlertMsg(string text, string text2)
         {
 
-            string msg = string.Format("{0}:\n---------\n {1}.", text, text2);
-            ViewBag.alertMessage = msg;
+            string msg = string.Format("{0}. {1}.", text, text2);
+            return makeModel(msg);
+
         }
 
-        public NinjaViewModel makeModel()
+        //responsible for populating a viewModel
+        public NinjaViewModel makeModel(string message)
         {
-            /*just for testing dropdownlist*/
-            //List<SelectListItem> tempList
-            //    = new List<SelectListItem>();
-
-            //tempList.Add(new SelectListItem() {Text = "Daryl", Value = "Beast"});
-            //tempList.Add(new SelectListItem() {Text = "Alchellle", Value = "Bitch"});
-            //tempList.Add(new SelectListItem() {Text = "Krystal", Value = "Teddybear Cate"});
-            //tempList.Add(new SelectListItem() {Text = "LuLu", Value = "Pisoshate"});
-            //tempList.Add(new SelectListItem() {Text = "Belle", Value = "Buldoggoloinks"});
 
             NinjaViewModel mm =
                 new NinjaViewModel()
@@ -112,7 +103,7 @@ namespace PirateShop.Controllers
                     Genders = _context.Genders.ToList(),
                     clanList = clanListPopulator(),
                     genderList = genderListPopulator(),
-
+                    Message2View = message
                     //nameList = new SelectList(tempList, "Value", "Text")
                 };
 
@@ -121,6 +112,7 @@ namespace PirateShop.Controllers
             return mm;
         }
 
+        //create a list of SelectListItem of genders for the view
         public SelectList genderListPopulator()
         {
             SelectList output;
@@ -142,6 +134,8 @@ namespace PirateShop.Controllers
             return output;
         }
 
+
+        //create a list of SelectListItem of clans for the view
         public SelectList clanListPopulator()
         {
             SelectList output;
