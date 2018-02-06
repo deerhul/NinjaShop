@@ -9,6 +9,7 @@ namespace PirateShop.Models.Items
         [Required]
         public int InventoryID { get; set; }
 
+        [Required]
         public string ninja { get; set; }
 
         public List<Equipment> equipments { get; set; }

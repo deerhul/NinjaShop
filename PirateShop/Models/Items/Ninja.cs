@@ -11,6 +11,7 @@ namespace PirateShop.Models.Items
         [StringLength(50)]
         public string Name { get; set; }
 
+        [Required]
         public Clan clan { get; set; }
 
         [Required]

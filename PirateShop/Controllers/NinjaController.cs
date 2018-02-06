@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using PirateShop.Models;
 using PirateShop.Models.Items;
+using PirateShop.Models.Methods;
 using PirateShop.Models.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -12,11 +12,13 @@ namespace PirateShop.Controllers
     public class NinjaController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private Utilities util;
 
         public NinjaController()
         {
             //Research application injection
             _context = new ApplicationDbContext();
+            util = new Utilities(_context);
         }
 
         // GET: Pirate
@@ -29,7 +31,7 @@ namespace PirateShop.Controllers
         public ActionResult Create()
         {
             //AlertMsg("Created Ninja", "test");
-            return View(makeModel(null));
+            return View(util.makeModel(null));
         }
 
         [Authorize]
@@ -64,12 +66,12 @@ namespace PirateShop.Controllers
                     viewModel.Age,
                     gender.gender,
                     clan.ClanName);
-                viewModel = AlertMsg("Created Ninja...", msg);
+                viewModel = util.AlertMsg("Created Ninja...", msg);
 
             }
             catch (Exception e)
             {
-                viewModel = AlertMsg("Create ninja", "Failed");
+                viewModel = util.AlertMsg("Create ninja", "Failed");
             }
 
             //return RedirectToAction("Index", "Home");
@@ -77,84 +79,6 @@ namespace PirateShop.Controllers
             return View(viewModel);
         }
 
-        /* assigns a message to the NinjaViewModel attribute 
-         * message displayed in view
-        */
-        public NinjaViewModel AlertMsg(string text, string text2)
-        {
-
-            string msg = string.Format("{0}. {1}.", text, text2);
-            return makeModel(msg);
-
-        }
-
-        //responsible for populating a viewModel
-        public NinjaViewModel makeModel(string message)
-        {
-
-            NinjaViewModel mm =
-                new NinjaViewModel()
-                {
-                    Name = "",
-                    Age = 0,
-                    Clan = new Clan(),
-                    Clans = _context.Clans.ToList(),
-                    Gender = new Gender(),
-                    Genders = _context.Genders.ToList(),
-                    clanList = clanListPopulator(),
-                    genderList = genderListPopulator(),
-                    Message2View = message
-                    //nameList = new SelectList(tempList, "Value", "Text")
-                };
-
-
-
-            return mm;
-        }
-
-        //create a list of SelectListItem of genders for the view
-        public SelectList genderListPopulator()
-        {
-            SelectList output;
-            var dblist = _context.Genders.ToList();
-            List<SelectListItem> itemList = new List<SelectListItem>();
-
-            foreach (var item in dblist)
-            {
-                itemList.Add(new SelectListItem()
-                    {
-                        Text = item.gender,
-                        Value = item.ID.ToString()
-                    }
-                );
-            }
-
-            output = new SelectList(itemList, "Value", "Text");
-
-            return output;
-        }
-
-
-        //create a list of SelectListItem of clans for the view
-        public SelectList clanListPopulator()
-        {
-            SelectList output;
-            var dblist = _context.Clans.ToList();
-            List<SelectListItem> itemList = new List<SelectListItem>();
-
-            foreach (var item in dblist)
-            {
-                itemList.Add(new SelectListItem()
-                    {
-                        Text = item.ClanName,
-                        Value = item.ClanID.ToString()
-                    }
-                );
-            }
-
-            output = new SelectList(itemList, "Value", "Text");
-
-            return output;
-        }
+       
     }
 }
