@@ -27,6 +27,14 @@ namespace PirateShop.Controllers
             return View();
         }
 
+        public ActionResult NinjaDisplay()
+        {
+            var ninjaList = from item in _context.Ninjas
+                select item;
+
+            return View(ninjaList.ToList());
+        }
+
         [Authorize]
         public ActionResult Create()
         {
