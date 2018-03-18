@@ -12,6 +12,7 @@ namespace PirateShop.Models.ViewModels
         //public string Time { get; set; }
         public int Age { get; set; }
         public Clan Clan { get; set; }
+        public IEnumerable<Ninja> Ninjas { get; set; }
         public IEnumerable<Clan> Clans { get; set; }
         public Gender Gender { get; set; }
         public IEnumerable<Gender> Genders { get; set; }

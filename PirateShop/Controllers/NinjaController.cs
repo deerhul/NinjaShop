@@ -29,10 +29,21 @@ namespace PirateShop.Controllers
 
         public ActionResult NinjaDisplay()
         {
+
+
             var ninjaList = from item in _context.Ninjas
                 select item;
 
-            return View(ninjaList.ToList());
+            var clanList = from clanitem in _context.Clans
+                select clanitem;
+
+
+
+            return View(new NinjaViewModel()
+            {
+                Clans = clanList,
+                Ninjas = ninjaList
+            });
         }
 
         [Authorize]
@@ -86,7 +97,5 @@ namespace PirateShop.Controllers
 
             return View(viewModel);
         }
-
-       
     }
 }
