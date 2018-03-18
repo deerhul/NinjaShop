@@ -232,6 +232,10 @@
     <Compile Include="Migrations\201802061609120_addedSomeDataAnnotationsToModels.Designer.cs">
       <DependentUpon>201802061609120_addedSomeDataAnnotationsToModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803181313505_testUpdate.cs" />
+    <Compile Include="Migrations\201803181313505_testUpdate.Designer.cs">
+      <DependentUpon>201803181313505_testUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -351,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802061609120_addedSomeDataAnnotationsToModels.resx">
       <DependentUpon>201802061609120_addedSomeDataAnnotationsToModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803181313505_testUpdate.resx">
+      <DependentUpon>201803181313505_testUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
