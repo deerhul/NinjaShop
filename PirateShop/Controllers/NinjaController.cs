@@ -31,51 +31,59 @@ namespace PirateShop.Controllers
 
         public ActionResult NinjaDisplay()
         {
+            /*
+             * create list of NinjaClanViewModel
+             * create same amount of NCV as Ninjas
+             * get the clan that has the ID specified
+             * get the gender that has the ID specified
+             */
 
-            //List<NinjaClanViewModel> NCV = new List<NinjaClanViewModel>();
+            List<NinjaClanViewModel> NCV = new List<NinjaClanViewModel>();
+            List<Ninja> nList = _context.Ninjas.ToList();
+            List<Clan> cList = _context.Clans.ToList();
+            List<Gender> gList = _context.Genders.ToList();
 
-            //var ninjaList = from item in _context.Ninjas
-            //    select item;
+            NinjaClanViewModel temp;
 
-            //var clanList = from clanitem in _context.Clans
-            //    select clanitem;
-
-
-            //foreach (var n in ninjaList)
-            //{
-            //    NCV.Add(new NinjaClanViewModel(){ninja = n, clan = new Clan()});
-            //}
-
-            //for (int i = 0 ; i < NCV.Count; i++)
-            //{
-            //    var temp = from item in clanList
-            //        where item.ClanID == NCV[i].ninja.clan.ClanID
-            //        select item;
-            //    NCV[i].clan = (Clan)temp;
-            //}
-
-            List<Ninja> NCV = new List<Ninja>();
-            NCV = _context.Ninjas.ToList();
-            foreach (var item in NCV)
+            foreach (var item in nList)
             {
-                //item.gender = _context.Genders.Single(g => g.ID == item.gender.ID);
-                //item.clan = _context.Clans.Single(c => c.ClanID == item.clan.ClanID);
-
-                if (item.clan == null && item.gender == null)
+                temp = new NinjaClanViewModel();
+                temp.ninja = item;
+                //temp.clan = _context.Clans.Single(c => c.ClanID.Equals(item.clanID));
+                //temp.Gender = _context.Genders.Single(g => g.ID.Equals(item.genderID));
+                foreach (Clan c in cList)
                 {
-                    item.clan = new Clan()
+                    if (c.ClanID.Equals(item.clanID))
+                    {
+                        temp.clan = c;
+                    }
+                }
+                if (temp.clan == null)
+                {
+                    temp.clan = new Clan()
                     {
                         ClanID = 69,
-                        ClanName = "Clan field is empty",
+                        ClanName = "Empty",
                         Members = 420
                     };
-
-                    item.gender = new Gender()
+                }
+                foreach (Gender g in gList)
+                {
+                    if (g.ID.Equals(item.genderID))
                     {
-                        gender = "Gender field is empty",
-                        ID = 420
+                        temp.Gender = g;
+                    }
+                }
+                if (temp.Gender == null)
+                {
+                    temp.Gender = new Gender()
+                    {
+                        gender = "Null",
+                        ID = 1234
                     };
                 }
+
+                NCV.Add(temp);
             }
             return View(NCV);
 
@@ -105,14 +113,14 @@ namespace PirateShop.Controllers
                 int genderSelected = viewModel.Gender.ID;
 
                 var creator = _context.Users.Single(u => u.Id == creatorId);
-                Clan clan = _context.Clans.Single(c => c.ClanID == clanSelected);
-                Gender gender = _context.Genders.Single(g => g.ID == genderSelected);
+                //Clan clan = _context.Clans.Single(c => c.ClanID == clanSelected);
+                //Gender gender = _context.Genders.Single(g => g.ID == genderSelected);
 
                 var ninja = new Ninja
                 {
                     Name = viewModel.Name,
-                    clan = clan,
-                    gender = gender,
+                    clanID = clanSelected,
+                    genderID = genderSelected,
                     Age = viewModel.Age,
                     Creator = creator
                 };
@@ -120,12 +128,13 @@ namespace PirateShop.Controllers
                 _context.Ninjas.Add(ninja);
                 _context.SaveChanges();
 
-                string msg = string.Format("{0}, {1}, {2}, from the {3}",
-                    viewModel.Name,
-                    viewModel.Age,
-                    gender.gender,
-                    clan.ClanName);
-                viewModel = util.AlertMsg("Created Ninja...", msg);
+                //not currently working
+                //string msg = string.Format("{0}, {1}, {2}, from the {3}",
+                //    viewModel.Name,
+                //    viewModel.Age,
+                //    gender.gender,
+                //    clan.ClanName);
+                //viewModel = util.AlertMsg("Created Ninja...", msg);
 
             }
             catch (Exception e)

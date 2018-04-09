@@ -12,10 +12,10 @@ namespace PirateShop.Models.Items
         public string Name { get; set; }
 
         [Required]
-        public Clan clan { get; set; }
+        public int clanID { get; set; }
 
         [Required]
-        public Gender gender { get; set; }
+        public int genderID { get; set; }
 
         [Required]
         public int Age { get; set; }

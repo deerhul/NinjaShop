@@ -10,6 +10,7 @@ namespace PirateShop.Models.ViewModels
     {
         public Ninja ninja { get; set; }
         public Clan clan { get; set; }
+        public Gender Gender { get; set; }
 
         //public NinjaClanViewModel()
         //{

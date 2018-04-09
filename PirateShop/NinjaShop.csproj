@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201803181313505_testUpdate.Designer.cs">
       <DependentUpon>201803181313505_testUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804091652110_changes2NinjaClass.cs" />
+    <Compile Include="Migrations\201804091652110_changes2NinjaClass.Designer.cs">
+      <DependentUpon>201804091652110_changes2NinjaClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -359,6 +363,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803181313505_testUpdate.resx">
       <DependentUpon>201803181313505_testUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804091652110_changes2NinjaClass.resx">
+      <DependentUpon>201804091652110_changes2NinjaClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
