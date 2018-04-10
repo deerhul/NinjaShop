@@ -43,6 +43,15 @@ namespace PirateShop.Controllers
             List<Clan> cList = _context.Clans.ToList();
             List<Gender> gList = _context.Genders.ToList();
 
+            int countClan = 0, countGender = 0;
+            foreach (var c in cList)
+            {
+                countClan++;
+            }
+            foreach (var g in gList)
+            {
+                countGender++;
+            }
             NinjaClanViewModel temp;
 
             foreach (var item in nList)
@@ -63,7 +72,7 @@ namespace PirateShop.Controllers
                     temp.clan = new Clan()
                     {
                         ClanID = 69,
-                        ClanName = "Empty",
+                        ClanName = countClan.ToString(),
                         Members = 420
                     };
                 }
@@ -78,7 +87,7 @@ namespace PirateShop.Controllers
                 {
                     temp.Gender = new Gender()
                     {
-                        gender = "Null",
+                        gender = countGender.ToString(),
                         ID = 1234
                     };
                 }
