@@ -38,68 +38,8 @@ namespace PirateShop.Controllers
              * get the gender that has the ID specified
              */
 
-            List<NinjaClanViewModel> NCV = new List<NinjaClanViewModel>();
-            List<Ninja> nList = _context.Ninjas.ToList();
-            List<Clan> cList = _context.Clans.ToList();
-            List<Gender> gList = _context.Genders.ToList();
-
-            int countClan = 0, countGender = 0;
-            foreach (var c in cList)
-            {
-                countClan++;
-            }
-            foreach (var g in gList)
-            {
-                countGender++;
-            }
-            NinjaClanViewModel temp;
-
-            foreach (var item in nList)
-            {
-                temp = new NinjaClanViewModel();
-                temp.ninja = item;
-                //temp.clan = _context.Clans.Single(c => c.ClanID.Equals(item.clanID));
-                //temp.Gender = _context.Genders.Single(g => g.ID.Equals(item.genderID));
-
-                //shorter option.
-                temp.clan = cList.Single(c => c.ClanID.Equals(item.clanID));
-                temp.Gender = gList.Single(g => g.ID.Equals(item.genderID));
-
-                //longer option but takes into account a scenario where clan and/or gender is unspecified
-                //foreach (Clan c in cList)
-                //{
-                //    if (c.ClanID.Equals(item.clanID))
-                //    {
-                //        temp.clan = c;
-                //    }
-                //}
-                //if (temp.clan == null)
-                //{
-                //    temp.clan = new Clan()
-                //    {
-                //        ClanID = 69,
-                //        ClanName = countClan.ToString(),
-                //        Members = 420
-                //    };
-                //}
-                //foreach (Gender g in gList)
-                //{
-                //    if (g.ID.Equals(item.genderID))
-                //    {
-                //        temp.Gender = g;
-                //    }
-                //}
-                //if (temp.Gender == null)
-                //{
-                //    temp.Gender = new Gender()
-                //    {
-                //        gender = countGender.ToString(),
-                //        ID = 1234
-                //    };
-                //}
-
-                NCV.Add(temp);
-            }
+            List<NinjaClanViewModel> NCV = util.CreateNinjaDisplay();
+            
             return View(NCV);
 
             //return View(new NinjaViewModel()
@@ -127,12 +67,12 @@ namespace PirateShop.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    viewModel = util.makeModel("Repopulating NinjaViewModel...");
-                    util.AlertMsg("Message: ", viewModel.Message2View);
-                    return View(viewModel);
-                }
+                //if (!ModelState.IsValid)
+                //{
+                //viewModel = util.makeModel("Repopulating NinjaViewModel...");
+                //util.AlertMsg("Message: ", viewModel.Message2View);
+                //return View(viewModel);
+                //}
 
                 // the id of logged-in member
                 var creatorId = User.Identity.GetUserId();
@@ -155,23 +95,26 @@ namespace PirateShop.Controllers
                 _context.Ninjas.Add(ninja);
                 _context.SaveChanges();
 
-                //not currently working
-                string msg = string.Format("{0}, {1}, {2}, from the {3}",
-                    viewModel.Name,
-                    viewModel.Age,
-                    viewModel.Gender.gender,
-                    viewModel.Clan.ClanName);
-                viewModel = util.AlertMsg("Created Ninja...", msg);
+                
 
             }
             catch (Exception e)
             {
-                viewModel = util.AlertMsg("Create ninja", "Failed");
+                util.AlertMsg("Create ninja", "Failed");
+                viewModel = util.makeModel("Repopulating NinjaViewModel...");
+                util.AlertMsg("Message: ", viewModel.Message2View);
+                return View(viewModel);
             }
 
             //return RedirectToAction("Index", "Home");
-
-            return View("NinjaDisplay", null);
+            //not currently working
+            string msg = string.Format("{0}, {1}, {2}, from the {3}",
+                viewModel.Name,
+                viewModel.Age,
+                viewModel.Gender.gender,
+                viewModel.Clan.ClanName);
+            util.AlertMsg("Created Ninja...", msg);
+            return View("NinjaDisplay", util.CreateNinjaDisplay());
         }
     }
 }

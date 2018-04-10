@@ -95,5 +95,72 @@ namespace PirateShop.Models.Methods
 
             return output;
         }
+
+        public List<NinjaClanViewModel> CreateNinjaDisplay()
+        {
+            List<NinjaClanViewModel> NCV = new List<NinjaClanViewModel>();
+            List<Ninja> nList = _context.Ninjas.ToList();
+            List<Clan> cList = _context.Clans.ToList();
+            List<Gender> gList = _context.Genders.ToList();
+
+            int countClan = 0, countGender = 0;
+            foreach (var c in cList)
+            {
+                countClan++;
+            }
+            foreach (var g in gList)
+            {
+                countGender++;
+            }
+            NinjaClanViewModel temp;
+
+            foreach (var item in nList)
+            {
+                temp = new NinjaClanViewModel();
+                temp.ninja = item;
+                //temp.clan = _context.Clans.Single(c => c.ClanID.Equals(item.clanID));
+                //temp.Gender = _context.Genders.Single(g => g.ID.Equals(item.genderID));
+
+                //shorter option.
+                temp.clan = cList.Single(c => c.ClanID.Equals(item.clanID));
+                temp.Gender = gList.Single(g => g.ID.Equals(item.genderID));
+
+                //longer option but takes into account a scenario where clan and/or gender is unspecified
+                //foreach (Clan c in cList)
+                //{
+                //    if (c.ClanID.Equals(item.clanID))
+                //    {
+                //        temp.clan = c;
+                //    }
+                //}
+                //if (temp.clan == null)
+                //{
+                //    temp.clan = new Clan()
+                //    {
+                //        ClanID = 69,
+                //        ClanName = countClan.ToString(),
+                //        Members = 420
+                //    };
+                //}
+                //foreach (Gender g in gList)
+                //{
+                //    if (g.ID.Equals(item.genderID))
+                //    {
+                //        temp.Gender = g;
+                //    }
+                //}
+                //if (temp.Gender == null)
+                //{
+                //    temp.Gender = new Gender()
+                //    {
+                //        gender = countGender.ToString(),
+                //        ID = 1234
+                //    };
+                //}
+
+                NCV.Add(temp);
+            }
+            return NCV;
+        }
     }
 }
