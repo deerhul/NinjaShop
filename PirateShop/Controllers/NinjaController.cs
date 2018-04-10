@@ -60,37 +60,43 @@ namespace PirateShop.Controllers
                 temp.ninja = item;
                 //temp.clan = _context.Clans.Single(c => c.ClanID.Equals(item.clanID));
                 //temp.Gender = _context.Genders.Single(g => g.ID.Equals(item.genderID));
-                foreach (Clan c in cList)
-                {
-                    if (c.ClanID.Equals(item.clanID))
-                    {
-                        temp.clan = c;
-                    }
-                }
-                if (temp.clan == null)
-                {
-                    temp.clan = new Clan()
-                    {
-                        ClanID = 69,
-                        ClanName = countClan.ToString(),
-                        Members = 420
-                    };
-                }
-                foreach (Gender g in gList)
-                {
-                    if (g.ID.Equals(item.genderID))
-                    {
-                        temp.Gender = g;
-                    }
-                }
-                if (temp.Gender == null)
-                {
-                    temp.Gender = new Gender()
-                    {
-                        gender = countGender.ToString(),
-                        ID = 1234
-                    };
-                }
+
+                //shorter option.
+                temp.clan = cList.Single(c => c.ClanID.Equals(item.clanID));
+                temp.Gender = gList.Single(g => g.ID.Equals(item.genderID));
+
+                //longer option but takes into account a scenario where clan and/or gender is unspecified
+                //foreach (Clan c in cList)
+                //{
+                //    if (c.ClanID.Equals(item.clanID))
+                //    {
+                //        temp.clan = c;
+                //    }
+                //}
+                //if (temp.clan == null)
+                //{
+                //    temp.clan = new Clan()
+                //    {
+                //        ClanID = 69,
+                //        ClanName = countClan.ToString(),
+                //        Members = 420
+                //    };
+                //}
+                //foreach (Gender g in gList)
+                //{
+                //    if (g.ID.Equals(item.genderID))
+                //    {
+                //        temp.Gender = g;
+                //    }
+                //}
+                //if (temp.Gender == null)
+                //{
+                //    temp.Gender = new Gender()
+                //    {
+                //        gender = countGender.ToString(),
+                //        ID = 1234
+                //    };
+                //}
 
                 NCV.Add(temp);
             }
@@ -106,8 +112,13 @@ namespace PirateShop.Controllers
         [Authorize]
         public ActionResult Create()
         {
+            NinjaViewModel vm = util.makeModel(null);
             //AlertMsg("Created Ninja", "test");
-            return View(util.makeModel(null));
+            if (!ModelState.IsValid)
+            {
+                vm = util.makeModel(null);
+            }
+            return View(vm);
         }
 
         [Authorize]
@@ -116,6 +127,13 @@ namespace PirateShop.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    viewModel = util.makeModel("Repopulating NinjaViewModel...");
+                    util.AlertMsg("Message: ", viewModel.Message2View);
+                    return View(viewModel);
+                }
+
                 // the id of logged-in member
                 var creatorId = User.Identity.GetUserId();
                 var clanSelected = viewModel.Clan.ClanID;
@@ -138,12 +156,12 @@ namespace PirateShop.Controllers
                 _context.SaveChanges();
 
                 //not currently working
-                //string msg = string.Format("{0}, {1}, {2}, from the {3}",
-                //    viewModel.Name,
-                //    viewModel.Age,
-                //    gender.gender,
-                //    clan.ClanName);
-                //viewModel = util.AlertMsg("Created Ninja...", msg);
+                string msg = string.Format("{0}, {1}, {2}, from the {3}",
+                    viewModel.Name,
+                    viewModel.Age,
+                    viewModel.Gender.gender,
+                    viewModel.Clan.ClanName);
+                viewModel = util.AlertMsg("Created Ninja...", msg);
 
             }
             catch (Exception e)
@@ -153,7 +171,7 @@ namespace PirateShop.Controllers
 
             //return RedirectToAction("Index", "Home");
 
-            return View(viewModel);
+            return View("NinjaDisplay", null);
         }
     }
 }
