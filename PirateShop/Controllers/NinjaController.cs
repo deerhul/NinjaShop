@@ -42,11 +42,6 @@ namespace PirateShop.Controllers
             
             return View(NCV);
 
-            //return View(new NinjaViewModel()
-            //{
-            //    Clans = clanList,
-            //    Ninjas = ninjaList
-            //});
         }
 
         [Authorize]
@@ -65,8 +60,8 @@ namespace PirateShop.Controllers
         [HttpPost]
         public ActionResult Create(NinjaViewModel viewModel)
         {
-            try
-            {
+            //try
+            //{
                 //if (!ModelState.IsValid)
                 //{
                 //viewModel = util.makeModel("Repopulating NinjaViewModel...");
@@ -80,10 +75,8 @@ namespace PirateShop.Controllers
                 int genderSelected = viewModel.Gender.ID;
 
                 var creator = _context.Users.Single(u => u.Id == creatorId);
-                //Clan clan = _context.Clans.Single(c => c.ClanID == clanSelected);
-                //Gender gender = _context.Genders.Single(g => g.ID == genderSelected);
 
-                var ninja = new Ninja
+                Ninja ninja = new Ninja
                 {
                     Name = viewModel.Name,
                     clanID = clanSelected,
@@ -92,19 +85,29 @@ namespace PirateShop.Controllers
                     Creator = creator
                 };
 
+                foreach (Clan clan in _context.Clans)
+                {
+                    if (clan.ClanID.Equals(ninja.clanID))
+                    {
+                    //increment member count for clan chosen
+                        clan.Members++;
+                    }
+                }
+
+                //save changes to database
                 _context.Ninjas.Add(ninja);
                 _context.SaveChanges();
 
                 
 
-            }
-            catch (Exception e)
-            {
-                util.AlertMsg("Create ninja", "Failed");
-                viewModel = util.makeModel("Repopulating NinjaViewModel...");
-                util.AlertMsg("Message: ", viewModel.Message2View);
-                return View(viewModel);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    util.AlertMsg("Create ninja", "Failed");
+            //    viewModel = util.makeModel("Repopulating NinjaViewModel...");
+            //    util.AlertMsg("Message: ", viewModel.Message2View);
+            //    return View(viewModel);
+            //}
 
             //return RedirectToAction("Index", "Home");
             //not currently working
