@@ -20,7 +20,12 @@
         <th>
             @Html.DisplayNameFor(model => model[0].Gender.gender)
         </th>
-        <th>@Html.DisplayNameFor(model => model[0].clan.ClanName)</th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].clan.ClanName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].ninja.NinjaImage)
+        </th>
         <th></th>
     </tr>
 
@@ -38,6 +43,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.clan.ClanName)
+        </td>
+        <td>
+            <img src="@Url.Content(item.ninja.NinjaImage)" width="50" height="50"/>
         </td>
         <td>
             @*@Html.ActionLink("Edit", "Edit", new { id = item.ninja.ID }) |

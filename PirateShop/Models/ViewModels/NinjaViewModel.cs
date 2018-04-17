@@ -1,5 +1,6 @@
 ﻿using PirateShop.Models.Items;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PirateShop.Models.ViewModels
@@ -24,6 +25,10 @@ namespace PirateShop.Models.ViewModels
         public SelectList clanList { get; set; }
 
         public string Message2View { get; set; }
+
+        public string ImgURL { get; set; }
+
+        public HttpPostedFileBase ImageFile { get; set; }
         //SECTION : "Building a Form with Bootstrap ep 4"
 
     }

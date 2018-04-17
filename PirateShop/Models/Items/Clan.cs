@@ -13,6 +13,8 @@ namespace PirateShop.Models.Items
 
         [Required]
         public int Members { get; set; }
+
+        public string ClanLogo { get; set; }
         /*
          * not for later:
          * Might be better to not allow for the number of members to be set so easily.

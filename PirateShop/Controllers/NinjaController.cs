@@ -6,6 +6,7 @@ using PirateShop.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.EnterpriseServices;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -15,12 +16,14 @@ namespace PirateShop.Controllers
     {
         private readonly ApplicationDbContext _context;
         private Utilities util;
+        private PictureMethod picMethod;
 
         public NinjaController()
         {
             //Research application injection
             _context = new ApplicationDbContext();
             util = new Utilities(_context);
+            
         }
 
         // GET: Pirate
@@ -39,7 +42,7 @@ namespace PirateShop.Controllers
              */
 
             List<NinjaClanViewModel> NCV = util.CreateNinjaDisplay();
-            
+
             return View(NCV);
 
         }
@@ -60,8 +63,8 @@ namespace PirateShop.Controllers
         [HttpPost]
         public ActionResult Create(NinjaViewModel viewModel)
         {
-            //try
-            //{
+            try
+            {
                 //if (!ModelState.IsValid)
                 //{
                 //viewModel = util.makeModel("Repopulating NinjaViewModel...");
@@ -69,10 +72,20 @@ namespace PirateShop.Controllers
                 //return View(viewModel);
                 //}
 
+                picMethod = new PictureMethod(_context);
+
                 // the id of logged-in member
                 var creatorId = User.Identity.GetUserId();
                 var clanSelected = viewModel.Clan.ClanID;
                 int genderSelected = viewModel.Gender.ID;
+                string filename 
+                    = Path.GetFileNameWithoutExtension(viewModel.ImageFile.FileName);
+                string extension
+                    = Path.GetExtension(viewModel.ImageFile.FileName);
+
+                filename = filename + DateTime.Now.ToString("yymmssfff") + extension;
+                filename = Path.Combine(Server.MapPath("~/Images/"), filename);
+                picMethod.SaveImage(viewModel,filename);
 
                 var creator = _context.Users.Single(u => u.Id == creatorId);
 
@@ -82,32 +95,26 @@ namespace PirateShop.Controllers
                     clanID = clanSelected,
                     genderID = genderSelected,
                     Age = viewModel.Age,
-                    Creator = creator
+                    Creator = creator,
+                    NinjaImage = "~/Images/" + filename
                 };
 
-                foreach (Clan clan in _context.Clans)
-                {
-                    if (clan.ClanID.Equals(ninja.clanID))
-                    {
-                    //increment member count for clan chosen
-                        clan.Members++;
-                    }
-                }
+                _context.Clans.Single(c => c.ClanID == ninja.clanID).Members++;
 
                 //save changes to database
                 _context.Ninjas.Add(ninja);
                 _context.SaveChanges();
 
-                
 
-            //}
-            //catch (Exception e)
-            //{
-            //    util.AlertMsg("Create ninja", "Failed");
-            //    viewModel = util.makeModel("Repopulating NinjaViewModel...");
-            //    util.AlertMsg("Message: ", viewModel.Message2View);
-            //    return View(viewModel);
-            //}
+
+            }
+            catch (Exception e)
+            {
+                util.AlertMsg("Create ninja", "Failed");
+                viewModel = util.makeModel("Repopulating NinjaViewModel...");
+                util.AlertMsg("Message: ", viewModel.Message2View);
+                return View(viewModel);
+            }
 
             //return RedirectToAction("Index", "Home");
             //not currently working

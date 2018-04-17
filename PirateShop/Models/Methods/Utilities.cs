@@ -103,15 +103,6 @@ namespace PirateShop.Models.Methods
             List<Clan> cList = _context.Clans.ToList();
             List<Gender> gList = _context.Genders.ToList();
 
-            int countClan = 0, countGender = 0;
-            foreach (var c in cList)
-            {
-                countClan++;
-            }
-            foreach (var g in gList)
-            {
-                countGender++;
-            }
             NinjaClanViewModel temp;
 
             foreach (var item in nList)
