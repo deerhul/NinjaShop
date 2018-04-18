@@ -8,6 +8,7 @@ namespace PirateShop.Models.Items
         public int ID { get; set; }
 
         [Required]
+        [Display(Name = "Gender")]
         public string gender { get; set; }
     }
 

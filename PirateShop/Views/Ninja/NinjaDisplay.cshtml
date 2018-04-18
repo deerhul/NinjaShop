@@ -42,10 +42,10 @@
             @Html.DisplayFor(modelItem => item.Gender.gender)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.clan.ClanName)
+            <img src="@Url.Content(item.clan.ClanLogo)" width="100" height="100" />
         </td>
         <td>
-            <img src="@Url.Content(item.ninja.NinjaImage)" width="150" height="150"/>
+            <img src="@Url.Content(item.ninja.NinjaImage)" width="100" height="100"/>
         </td>
         <td>
             @*@Html.ActionLink("Edit", "Edit", new { id = item.ninja.ID }) |

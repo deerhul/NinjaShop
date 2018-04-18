@@ -9,6 +9,7 @@ namespace PirateShop.Models.Items
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Clan")]
         public string ClanName { get; set; }
 
         [Required]
