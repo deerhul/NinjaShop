@@ -78,12 +78,16 @@ namespace PirateShop.Controllers
                 var creatorId = User.Identity.GetUserId();
                 var clanSelected = viewModel.Clan.ClanID;
                 int genderSelected = viewModel.Gender.ID;
+
+                //youtube vid link for imageupload section: https://www.youtube.com/watch?v=5L5W-AE-sEs
                 string filename 
                     = Path.GetFileNameWithoutExtension(viewModel.ImageFile.FileName);
                 string extension
                     = Path.GetExtension(viewModel.ImageFile.FileName);
+                string filename2DB;
 
                 filename = filename + DateTime.Now.ToString("yymmssfff") + extension;
+                filename2DB = filename; // for saving
                 filename = Path.Combine(Server.MapPath("~/Images/"), filename);
                 picMethod.SaveImage(viewModel,filename);
 
@@ -96,7 +100,7 @@ namespace PirateShop.Controllers
                     genderID = genderSelected,
                     Age = viewModel.Age,
                     Creator = creator,
-                    NinjaImage = "~/Images/" + filename
+                    NinjaImage = "~/Images/" + filename2DB
                 };
 
                 _context.Clans.Single(c => c.ClanID == ninja.clanID).Members++;
