@@ -50,7 +50,8 @@
         <td>
             @*@Html.ActionLink("Edit", "Edit", new { id = item.ninja.ID }) |
             @Html.ActionLink("Details", "Details", new { id = item.ninja.ID }) |*@
-            @Html.ActionLink("Delete", "Delete", new { id = item.ninja.ID })
+            @*@Html.ActionLink("Delete", "Delete", new { id = item.ninja.ID })*@
+            <button onclick="location.href='@Url.Action("Delete", "Ninja", new { id = item.ninja.ID })'; return false;">Delete</button>
         </td>
     </tr>
     }

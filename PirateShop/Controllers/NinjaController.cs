@@ -23,7 +23,7 @@ namespace PirateShop.Controllers
             //Research application injection
             _context = new ApplicationDbContext();
             util = new Utilities(_context);
-            
+
         }
 
         // GET: Pirate
@@ -80,7 +80,7 @@ namespace PirateShop.Controllers
                 int genderSelected = viewModel.Gender.ID;
 
                 //youtube vid link for imageupload section: https://www.youtube.com/watch?v=5L5W-AE-sEs
-                string filename 
+                string filename
                     = Path.GetFileNameWithoutExtension(viewModel.ImageFile.FileName);
                 string extension
                     = Path.GetExtension(viewModel.ImageFile.FileName);
@@ -89,7 +89,7 @@ namespace PirateShop.Controllers
                 filename = filename + DateTime.Now.ToString("yymmssfff") + extension;
                 filename2DB = filename; // for saving
                 filename = Path.Combine(Server.MapPath("~/Images/"), filename);
-                picMethod.SaveImage(viewModel,filename);
+                picMethod.SaveImage(viewModel, filename);
 
                 var creator = _context.Users.Single(u => u.Id == creatorId);
 
@@ -114,7 +114,7 @@ namespace PirateShop.Controllers
             }
             catch (Exception e)
             {
-                util.AlertMsg("Create ninja", "Failed");
+                util.AlertMsg("Create ninja", "Failed: "+e.ToString());
                 viewModel = util.makeModel("Repopulating NinjaViewModel...");
                 util.AlertMsg("Message: ", viewModel.Message2View);
                 return View(viewModel);
@@ -128,6 +128,35 @@ namespace PirateShop.Controllers
                 viewModel.Gender.gender,
                 viewModel.Clan.ClanName);
             util.AlertMsg("Created Ninja...", msg);
+            return View("NinjaDisplay", util.CreateNinjaDisplay());
+        }
+
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                Ninja temp = null;
+
+                foreach (Ninja item in _context.Ninjas)
+                {
+                    if (item.ID.Equals(id))
+                    {
+                        temp = item;
+                        break;
+                    }
+                }
+
+                if (temp != null)
+                {
+                    _context.Ninjas.Remove(temp);
+                    _context.SaveChanges();
+                    util.AlertMsg("Delete ninja", "Ninja deletion success");
+                }
+            }
+            catch(Exception e)
+            {
+                util.AlertMsg(null, e.ToString());
+            }
             return View("NinjaDisplay", util.CreateNinjaDisplay());
         }
     }
