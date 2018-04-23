@@ -79,6 +79,9 @@ namespace PirateShop.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+
+                    Session["user"] = model.Email;
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -124,6 +127,7 @@ namespace PirateShop.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    Session["user"] = "Placeholder";
                     return RedirectToLocal(model.ReturnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -391,6 +395,7 @@ namespace PirateShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session["user"] = null;
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }

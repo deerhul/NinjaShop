@@ -34,13 +34,6 @@ namespace PirateShop.Controllers
 
         public ActionResult NinjaDisplay()
         {
-            /*
-             * create list of NinjaClanViewModel
-             * create same amount of NCV as Ninjas
-             * get the clan that has the ID specified
-             * get the gender that has the ID specified
-             */
-
             List<NinjaClanViewModel> NCV = util.CreateNinjaDisplay();
 
             return View(NCV);
@@ -65,13 +58,6 @@ namespace PirateShop.Controllers
         {
             try
             {
-                //if (!ModelState.IsValid)
-                //{
-                //viewModel = util.makeModel("Repopulating NinjaViewModel...");
-                //util.AlertMsg("Message: ", viewModel.Message2View);
-                //return View(viewModel);
-                //}
-
                 picMethod = new PictureMethod(_context);
 
                 // the id of logged-in member
@@ -86,6 +72,7 @@ namespace PirateShop.Controllers
                     = Path.GetExtension(viewModel.ImageFile.FileName);
                 string filename2DB;
 
+                //save image name is unique to allow duplicate names (time/date inclusive in name)
                 filename = filename + DateTime.Now.ToString("yymmssfff") + extension;
                 filename2DB = filename; // for saving
                 filename = Path.Combine(Server.MapPath("~/Images/"), filename);
@@ -114,7 +101,7 @@ namespace PirateShop.Controllers
             }
             catch (Exception e)
             {
-                util.AlertMsg("Create ninja", "Failed: "+e.ToString());
+                util.AlertMsg("Create ninja", "Failed: " + e.ToString());
                 viewModel = util.makeModel("Repopulating NinjaViewModel...");
                 util.AlertMsg("Message: ", viewModel.Message2View);
                 return View(viewModel);
@@ -133,30 +120,34 @@ namespace PirateShop.Controllers
 
         public ActionResult Delete(int id)
         {
-            try
+            if (Session["user"] != null) //prevent not-logged in users from having access to delete method
             {
-                Ninja temp = null;
-
-                foreach (Ninja item in _context.Ninjas)
+                try
                 {
-                    if (item.ID.Equals(id))
+                    Ninja temp = null;
+
+                    foreach (Ninja item in _context.Ninjas)
                     {
-                        temp = item;
-                        break;
+                        if (item.ID.Equals(id))
+                        {
+                            temp = item;
+                            break;
+                        }
+                    }
+
+                    if (temp != null)
+                    {
+                        _context.Ninjas.Remove(temp);
+                        _context.SaveChanges();
+                        util.AlertMsg("Delete ninja", "Ninja deletion success");
                     }
                 }
-
-                if (temp != null)
+                catch (Exception e)
                 {
-                    _context.Ninjas.Remove(temp);
-                    _context.SaveChanges();
-                    util.AlertMsg("Delete ninja", "Ninja deletion success");
+                    util.AlertMsg(null, e.ToString());
                 }
             }
-            catch(Exception e)
-            {
-                util.AlertMsg(null, e.ToString());
-            }
+
             return View("NinjaDisplay", util.CreateNinjaDisplay());
         }
     }
