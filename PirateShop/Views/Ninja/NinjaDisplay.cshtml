@@ -10,54 +10,62 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table table-hover">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model[0].ninja.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].ninja.Age)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Gender.gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].clan.ClanName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].ninja.NinjaImage)
-        </th>
-        <th></th>
-    </tr>
+    <div id="wholebox">
+        @foreach (var item in Model)
+        {
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ninja.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ninja.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender.gender)
-            </td>
-            <td>
-                <img src="@Url.Content(item.clan.ClanLogo)" width="100" height="100" />
-            </td>
-            <td>
-                <img src="@Url.Content(item.ninja.NinjaImage)" width="100" height="100" />
-            </td>
-            <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item.ninja.ID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ninja.ID }) |*@
-                @*@Html.ActionLink("Delete", "Delete", new { id = item.ninja.ID })*@
-                @if (Session["user"] != null) //if user is logged in, enable function
+            <div id="infoBox">
+                <img src="@Url.Content(item.clan.ClanLogo)" id="picture" />
+
+                @if (item.ninja.NinjaImage.IsEmpty())
                 {
-                    <button onclick="location.href='@Url.Action("Delete", "Ninja", new { id = item.ninja.ID })'; return false;">Delete</button>
+                    <img src="@Url.Content("~/Images/empty.png")" id="picture" />
+                }
+                else
+                {
+                    <img src="@Url.Content(item.ninja.NinjaImage)" id="picture" />
                 }
 
-            </td>
-        </tr>
-    }
+                <div id="box">@Html.DisplayFor(modelItem => item.ninja.Name)</div>
+                <div id="box">@Html.DisplayFor(modelItem => item.ninja.Age)</div>
+                <div id="box">@Html.DisplayFor(modelItem => item.Gender.gender)</div>
+
+                <div id="button">
+                    @if (Session["user"] != null) //if user is logged in, enable function
+                    {
+                        <button onclick="location.href = '@Url.Action("Delete", "Ninja", new {id = item.ninja.ID})';return false;">Delete</button>
+                    }
+                </div>
+            </div>
+
+            @*<tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ninja.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ninja.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender.gender)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.clan.ClanLogo)" id="picture"/>
+                </td>
+                <td>
+                    <img src="@Url.Content(item.ninja.NinjaImage)" id="picture"/>
+                </td>
+                <td>*@
+            @*@Html.ActionLink("Edit", "Edit", new { id = item.ninja.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ninja.ID }) |*@
+            @*@Html.ActionLink("Delete", "Delete", new { id = item.ninja.ID })*@
+            @*@if (Session["user"] != null) //if user is logged in, enable function
+                        {
+                            <button onclick="location.href='@Url.Action("Delete", "Ninja", new { id = item.ninja.ID })'; return false;">Delete</button>
+                        }
+
+                    </td>
+                </tr>*@
+        }
+    </div>
 
 </table>

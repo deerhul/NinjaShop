@@ -9,6 +9,7 @@ using System.EnterpriseServices;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.WebPages;
 
 namespace PirateShop.Controllers
 {
@@ -80,15 +81,33 @@ namespace PirateShop.Controllers
 
                 var creator = _context.Users.Single(u => u.Id == creatorId);
 
-                Ninja ninja = new Ninja
+                Ninja ninja = null;
+
+                if (!filename.IsEmpty())
                 {
-                    Name = viewModel.Name,
-                    clanID = clanSelected,
-                    genderID = genderSelected,
-                    Age = viewModel.Age,
-                    Creator = creator,
-                    NinjaImage = "~/Images/" + filename2DB
-                };
+                    ninja = new Ninja
+                    {
+                        Name = viewModel.Name,
+                        clanID = clanSelected,
+                        genderID = genderSelected,
+                        Age = viewModel.Age,
+                        Creator = creator,
+                        NinjaImage = "~/Images/" + filename2DB
+                    };
+                }
+                else
+                {
+                    ninja = new Ninja
+                    {
+                        Name = viewModel.Name,
+                        clanID = clanSelected,
+                        genderID = genderSelected,
+                        Age = viewModel.Age,
+                        Creator = creator,
+                    };
+                }
+
+
 
                 _context.Clans.Single(c => c.ClanID == ninja.clanID).Members++;
 
